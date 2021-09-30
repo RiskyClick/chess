@@ -1,4 +1,5 @@
-from peices import *
+from chess.items.peices import *
+
 starting_black = [
     ['R', 'A8'],
     ['B', 'B8'],

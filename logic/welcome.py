@@ -1,5 +1,4 @@
-from new_game import *
-
+from chess.logic.new_game import *
 class welcome_screen():
     print("+++++++Welcome+++++++")
     print("If you would like to \nplay a game of chess")

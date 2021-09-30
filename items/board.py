@@ -1,4 +1,4 @@
-from peices import *
+from chess.items.peices import *
 
 class board():
     def __init__(self):
@@ -91,4 +91,7 @@ class board():
             if val[1] == 7:
                 print()
                 print("---------------------------------")
-                print("|", end="")
+                if val == [7, 7]:
+                    pass
+                else:
+                    print("|", end="")
