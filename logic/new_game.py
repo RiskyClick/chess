@@ -13,7 +13,7 @@ class new_game():
     def select_peice(self, color):
         while True:
             #select = input()
-            select = 'A1'
+            select = 'D4'
             peice = self.white.ownership(select)
             if color == 'w':
                 if peice == 'False':
@@ -35,6 +35,8 @@ class new_game():
             return False
 
     def follows_rule(self, peice, location):
+        if peice.position == location:
+            return False
         return peice.rule(location, self.board)
 
     def change_location(self, peice, location):
@@ -53,8 +55,7 @@ class new_game():
         up_down = False
         up = False
         left = False
-        rreal = self.board.positions.get(peice.position)
-        temp = rreal
+        rreal = self.board.positions.get(peice.position).copy()
         lreal = self.board.positions.get(location)
         if rreal[1] == lreal[1]:
             up_down = True
@@ -64,31 +65,118 @@ class new_game():
             left = True
 
         if up:
-            while temp[0] >= lreal[0]:
-                print("{} rreal".format(rreal))
-                print("{} twmp".format(temp))
-                temp[0] -= 1
+            while rreal[0] != lreal[0]:
+                rreal[0] -= 1
                 for i in self.white.peices:
-                    print("{} i.pos".format(i.position))
-                    print("{} twmp".format(temp))
-                    print("{} rreal".format(rreal))
-                    print("{} self.board.positions.get(i.position)".format(self.board.positions.get(i.position)))
-                    if temp == self.board.positions.get(i.position):
+                    if rreal == self.board.positions.get(i.position):
                         return False
-                print("forloop for black")
+                for j in self.black.peices:
+                    if rreal == self.board.positions.get(j.position):
+                        return False
+            return True
+
+        elif up_down:
+            rreal = self.board.positions.get(peice.position).copy()
+            while rreal[0] != lreal[0]:
+                rreal[0] += 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
                 for i in self.black.peices:
-                    print(i.title)
                     if rreal == self.board.positions.get(i.position) and rreal != lreal:
                         return False
-        input()
-        print("this should be the end of it")
+            return True
 
+        elif left:
+            rreal = self.board.positions.get(peice.position).copy()
+            while rreal[1] != lreal[1]:
+                rreal[1] -= 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
+                for i in self.black.peices:
+                    if rreal == self.board.positions.get(i.position) and rreal != lreal:
+                        return False
+            return True
+
+        else:
+            rreal = self.board.positions.get(peice.position).copy()
+            while rreal[1] != lreal[1]:
+                rreal[1] += 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
+                for i in self.black.peices:
+                    if rreal == self.board.positions.get(i.position) and rreal != lreal:
+                        return False
+            return True
 
 
 
 
     def b_shift(self, peice, location):
-        pass
+        up_left = False
+        up_right = False
+        down_left = False
+        rreal = self.board.positions.get(peice.position).copy()
+        lreal = self.board.positions.get(location)
+        if rreal[0] > lreal[0]:
+            if rreal[1] > lreal[1]:
+                up_left = True
+            else:
+                up_right = True
+        elif rreal[1] > lreal[1]:
+            down_left = True
+
+        if up_left:
+            while rreal != lreal:
+                rreal[0] -= 1
+                rreal[1] -= 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
+                for i in self.black.peices:
+                    if rreal == self.board.positions.get(i.position) and rreal != lreal:
+                        return False
+            return True
+        elif up_right:
+            rreal = self.board.positions.get(peice.position).copy()
+            while rreal != lreal:
+                rreal[0] -= 1
+                rreal[1] += 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
+                for i in self.black.peices:
+                    if rreal == self.board.positions.get(i.position) and rreal != lreal:
+                        return False
+            return True
+
+        elif down_left:
+            rreal = self.board.positions.get(peice.position).copy()
+            while rreal != lreal:
+                rreal[0] += 1
+                rreal[1] -= 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
+                for i in self.black.peices:
+                    if rreal == self.board.positions.get(i.position) and rreal != lreal:
+                        return False
+            return True
+
+        else:
+            rreal = self.board.positions.get(peice.position).copy()
+            while rreal != lreal:
+                rreal[0] += 1
+                rreal[1] += 1
+                for i in self.white.peices:
+                    if rreal == self.board.positions.get(i.position):
+                        return False
+                for i in self.black.peices:
+                    if rreal == self.board.positions.get(i.position) and rreal != lreal:
+                        return False
+            return True
 
     def p_shift(self, peice, location):
         pass
@@ -114,8 +202,8 @@ class new_game():
     def move_to(self, peice, color):
         print("Enter the location you want to move {} to: ".format(peice.title))
         while True:
-            #location = input()
-            location = 'A4'
+            location = input()
+            #location = 'A4'
             if self.on_board(location) and self.open_space(location):
                 if self.follows_rule(peice, location):
                     if self.blocked(peice, location):
@@ -144,6 +232,7 @@ class new_game():
         
         #person whos turn it is select peaice
         #location to move peice
+        #this is not on github
 
 
 
