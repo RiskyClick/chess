@@ -67,7 +67,6 @@ class board():
             'F1': [7, 5],
             'G1': [7, 6],
             'H1': [7, 7],
-
         }
     
     def fill_void(self, arr, key):
