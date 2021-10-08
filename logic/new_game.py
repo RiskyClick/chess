@@ -112,8 +112,6 @@ class new_game():
             return True
 
 
-
-
     def b_shift(self, peice, location):
         up_left = False
         up_right = False
@@ -179,13 +177,45 @@ class new_game():
             return True
 
     def p_shift(self, peice, location):
-        pass
+        rreal = self.board.positions.get(peice.position).copy()
+        lreal = self.board.positions.get(location)
+        if abs(rreal[1] - lreal[1]) == 1:
+            return True
+        else:
+            if rreal[0] > lreal[0]:
+                while rreal[0] != lreal[0]:
+                    rreal -= 1
+                    for i in self.white.peices:
+                        if rreal == self.board.positions.get(i.position):
+                            return False
+                    for j in self.black.peices:
+                        if rreal == self.board.positions.get(j.position):
+                            return False
+                return True
+            else:
+                while rreal[0] != lreal[0]:
+                    rreal += 1
+                    for i in self.white.peices:
+                        if rreal == self.board.positions.get(i.position):
+                            return False
+                    for j in self.black.peices:
+                        if rreal == self.board.positions.get(j.position):
+                            return False
+                return True
 
-    def k_shift(self, peice, location):
-        pass
+    def K_shift(self, peice, location):
+        if peice.owner == 'white':
+            return False if location in self.white.peices else True
+        else:
+            return False if location in self.black.peices else True
 
     def q_shift(self, peice, location):
-        pass
+        rreal = self.board.positions.get(peice.position).copy()
+        lreal = self.board.positions.get(location)
+        if rreal[0] == lreal[0] or rreal[1] == lreal[1]:
+            return self.r_shift(peice, location)
+        else:
+            return self.b_shift(peice, location)
 
     def blocked(self, peice, location):
         if peice.title == 'k':
@@ -193,7 +223,7 @@ class new_game():
         block_call = {
             "R": self.r_shift(peice, location),
             "B": self.b_shift(peice, location),
-            "K": self.k_shift(peice, location),
+            "K": self.K_shift(peice, location),
             "Q": self.q_shift(peice, location),
             "p": self.p_shift(peice, location)
         }
@@ -227,12 +257,6 @@ class new_game():
             self.move_to(peice, 'w')
             self.board.draw_board(self.white.peices, self.black.peices)
 
-        #draw the board
-        #whos turn is it
-        
-        #person whos turn it is select peaice
-        #location to move peice
-        #this is not on github
 
 
 
